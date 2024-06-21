@@ -1,0 +1,100 @@
+/* Global styles */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Para centralizar verticalmente */
+}
+
+h1 {
+  font-size: 50px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #4CAF50;
+  color: #fff;
+  cursor: pointer;
+  margin: 5px;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+/* Login and Register styles */
+
+.login-box,
+.register-box {
+  width: 300px;
+  margin: 40px;
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-box label,
+.register-box label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.login-box input,
+.register-box input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Sudoku styles */
+
+.sudoku-container {
+  display: flex;
+  align-items: center; /* Para alinhar verticalmente o tabuleiro e o timer */
+}
+
+.sudoku-table {
+  margin: 0 20px; /* Espaçamento entre o tabuleiro e o timer */
+  border-collapse: collapse;
+}
+
+.sudoku-table td {
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  padding: 5px;
+  border: 1px solid #ccc;
+}
+
+.sudoku-table td input[type="text"] {
+  width: 100%;
+  height: 100%;
+  font-size: 24px;
+  text-align: center;
+  padding: 5px;
+  border: none;
+  border-radius: 5px;
+  background-color: #f0f0f0;
+}
+
+.timer {
+  font-size: 24px;
+  margin-left: 20px; /* Espaçamento entre o timer e o tabuleiro */
+}
