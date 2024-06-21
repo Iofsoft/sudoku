@@ -1,6 +1,6 @@
-
 const express = require('express');
 const app = express();
+
 
 var board = [[5, 3, '', '', 7, '', '', '', ''],
 [6, '', '', 1, 9, 5, '', '', ''],

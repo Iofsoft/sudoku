@@ -1,16 +1,37 @@
 import React, { useState } from 'react';
-const LoginScreen = () => {
+import database from "../../server/db";
+
+const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    // Handle login logic here
+
+    const handleLogin = async (e) => {
+        e.preventDefault();
+
+      try {
+        await database.sync();
+        const [results, metadata] = await database.query(
+          'SELECT * FROM players WHERE name = ? AND password = ?',
+          {
+            replacements: [username, password],
+          }
+        );
+        if (results.length > 0) {
+          console.log('Login successful');
+          // Add your login success logic here
+        } else {
+          console.log('Invalid username or password');
+          // Handle invalid login
+        }
+      } catch (error) {
+        console.error(error);
+      }
   };
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    // Handle register logic here
+ 
   };
 
   return (
@@ -38,10 +59,10 @@ const LoginScreen = () => {
         </label>
         <br />
         <button type="submit">Login</button>
-        <button onClick={handleRegister}>Register</button>
+        <button type="button" onClick={handleRegister}>Register</button>
       </form>
     </div>
   );
 };
 
-export default LoginScreen;
+export default Login;

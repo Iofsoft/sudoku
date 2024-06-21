@@ -1,7 +1,7 @@
 import React from 'react';
+// import database from './db';
 
-
-const RegisterScreen = () => {
+const Register = () => {
   const handleRegister = (e) => {
     e.preventDefault();
     const name = e.target.name.value;
@@ -43,4 +43,4 @@ const RegisterScreen = () => {
   );
 };
 
-export default RegisterScreen;
+export default Register;
