@@ -1,47 +1,51 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState,  useContext } from 'react';
+import axios from 'axios';
 import './App.css';
+import { UserContext } from './UserContext';
 
-const SudokuGame = ({time, setTime, setIsRunning}) => {
-        const [board, setBoard] = useState([
-            ['', '', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', '', ''],
-            ['', '', '', '', '', '', '', '', '']
-          ]);
+const initialBoard =() =>([
+  ['', 3, '', 6, 7, '', 9, 1, ''],
+  ['', '', 2, 1, '', 5, '', 4, ''],
+  [1, 9, '', 3, '', 2, '', '', 7],
+  [8, '', '', 7, '', 1, '', 2, 3],
+  [4, '', 6, '', '', 3, '', '', 1],
+  [7, 1, 3, '', '', 4, '', 5, 6],
+  [9, '', '', 5, 3, '', '', '', 4],
+  ['', 8, 7, '', 1, '', 6, '', 5],
+  [3, '', 5, 2, '', 6, 1, '', 9]
+]);
 
-        useEffect(() =>{
-          fetch('http://localhost:3000/game')
-          .then(response=>response.json())
-          .then(data => setBoard(data));
-        }, []);
-
+const SudokuGame = ({setTime, setIsRunning}) => {
+  const [board, setBoard] = useState(initialBoard());
+  const [error, setError] = useState('')
+  const { username } = useContext(UserContext);  
+  
   const handleInputChange = (e, row, col) => {
     const value = e.target.value;
     const newBoard = [...board];
     newBoard[row][col] = value;
     setBoard(newBoard);
   };
-
+  
+  const hasInitialValue = (row, col) => {
+    return board[row][col] !== '';
+  };
+  
   const isValidMove = (row, col, num) => {
     num = num.toString();
-    // Verifica linha
+
     for (let i = 0; i < 9; i++) {
       if (board[row][i].toString() === num) {
         return false;
       }
     }
-    // Verifica coluna
+  
     for (let i = 0; i < 9; i++) {
       if (board[i][col].toString() === num) {
         return false;
       }
     }
-    // Verifica quadrante
+
     const startRow = Math.floor(row / 3) * 3;
     const startCol = Math.floor(col / 3) * 3;
     for (let i = startRow; i < startRow + 3; i++) {
@@ -52,10 +56,9 @@ const SudokuGame = ({time, setTime, setIsRunning}) => {
       }
     }
     return true;
-  };
+  }; 
 
-
-  const solveHelper = (board) => {
+ const solveHelper = (board) => {
     for (let row = 0; row < 9; row++) {
       for (let col = 0; col < 9; col++) {
         if (board[row][col] === '') {
@@ -65,7 +68,6 @@ const SudokuGame = ({time, setTime, setIsRunning}) => {
               if (solveHelper(board)) {
                 return true;
               }
-              board[row][col] = '';
             }
           }
           return false;
@@ -74,24 +76,46 @@ const SudokuGame = ({time, setTime, setIsRunning}) => {
     }
     return true;
   };
-
+var numbers = 81
   const solveSudoku = () => {
+    for (let row = 0; row < 9; row++) {
+      for (let col = 0; col < 9; col++) {
+          if (hasInitialValue(row, col)) {
+              numbers--;
+        }
+      }
+    }
     const boardCopy = [...board];
     if (solveHelper(boardCopy)) {
       setBoard(boardCopy);
       document.querySelector('#msg').innerHTML = "<span style=color:green><b>Sudoku Solved :D !</b><span/>";
       setIsRunning(false);
+      saveRecord(numbers)
     } else {
       document.querySelector('#msg').innerHTML = "<span style=color:red><b>Impossible solution :(</b><span/>"
+    }
+  };
+
+  const saveRecord = async (remainingNumbers) => {
+    try{
+      console.log(remainingNumbers)
+      const response = await axios.post('http://localhost:3000/record',{
+        username:username,
+        remainingNumbers
+      });
+      const data = await response.data;
+      if(data.error){
+        setError(data.error);
+      }
+    }
+    catch(error){
+      setError(error.message);
     }
   };
   
 
   const resetSudoku = () => {
-    fetch('http://localhost:3000/game')
-    .then(response=>response.json())
-    .then(data => setBoard(data));
-    document.querySelector('#msg').innerHTML = "";
+    setBoard(initialBoard());
     setTime(0);
     setIsRunning(true);
   };
@@ -113,6 +137,7 @@ const SudokuGame = ({time, setTime, setIsRunning}) => {
             }>
               <input type="text" value={cell} onChange={(e) => handleInputChange(e, rowIndex, colIndex)} 
               maxLength="1" style={{ width: '2em', height: '2em', textAlign: 'center' }}
+              disabled={hasInitialValue(rowIndex, colIndex)}
               />
             </td>
           ))}
@@ -122,6 +147,7 @@ const SudokuGame = ({time, setTime, setIsRunning}) => {
   </table>
   <button onClick={solveSudoku}>Solve</button>
   <button onClick={resetSudoku}>Reset</button>
+  <button>Records</button>
 </div>
   );
 };

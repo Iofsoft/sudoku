@@ -1,37 +1,39 @@
-import React, { useState } from 'react';
-import database from "../../server/db";
+import React, { useState, useContext } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { UserContext } from './UserContext';
 
 const Login = () => {
-  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-
-
+  const [error, setError] = useState('');
+  const [msg, setMsg] = useState('');
+  const { username, setUsername } = useContext(UserContext);
+  const navigate = useNavigate();
+ 
     const handleLogin = async (e) => {
-        e.preventDefault();
-
-      try {
-        await database.sync();
-        const [results, metadata] = await database.query(
-          'SELECT * FROM players WHERE name = ? AND password = ?',
-          {
-            replacements: [username, password],
+      e.preventDefault();
+        try{
+          const response = await axios.post('http://localhost:3000/login', {
+            username,
+            password
+          });
+          const data = await response.data;
+          if(data.error){
+            setError(data.error);
           }
-        );
-        if (results.length > 0) {
-          console.log('Login successful');
-          // Add your login success logic here
-        } else {
-          console.log('Invalid username or password');
-          // Handle invalid login
+          else{
+            navigate('/game');
+
+          }
         }
-      } catch (error) {
-        console.error(error);
-      }
+        catch (error){
+          setMsg('User not Found or wrong password')
+          setError(error.message)
+        }
   };
 
   const handleRegister = async (e) => {
-    e.preventDefault();
- 
+        navigate('/register')
   };
 
   return (
@@ -58,7 +60,10 @@ const Login = () => {
           />
         </label>
         <br />
-        <button type="submit">Login</button>
+        <div>
+          <span id='unauthorized'>{msg}</span>
+        </div>
+        <button type="submit" onClick={handleLogin}>Login</button>
         <button type="button" onClick={handleRegister}>Register</button>
       </form>
     </div>

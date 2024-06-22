@@ -1,14 +1,13 @@
-const databaseConnect = require('./dbConnect')
-const createDatabase = require('./dbCreate')
 const app = require('./index');
+const sequelize = require('./db');
+const User = require('./models/user');
+const Record = require('./models/record');
 const PORT = 3000;
 
-async function initDatabase(){
-    await createDatabase()
-    await databaseConnect()
-}
 
-initDatabase()
+(async () =>{
+    await sequelize.sync()
+})();
 
 app.listen(PORT, () =>{
     console.log(`Servidor rodando em http://localhost:${PORT}`)

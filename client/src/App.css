@@ -20,6 +20,10 @@ h1 {
   margin-bottom: 10px;
   text-align: center;
 }
+a{
+  padding: 30px;
+  cursor:pointer
+}
 
 button {
   padding: 10px 20px;
@@ -36,6 +40,10 @@ button:hover {
 }
 
 /* Login and Register styles */
+
+#unauthorized{
+  color: red
+}
 
 .login-box,
 .register-box {
@@ -75,6 +83,12 @@ button:hover {
   border-collapse: collapse;
 }
 
+.vertical{
+  border-left: 4px solid rgb(0, 0, 0)!important;
+}
+.horizontal{
+  border-top: 4px solid rgb(0, 0, 0)!important;
+}
 .sudoku-table td {
   width: 40px;
   height: 40px;
@@ -93,6 +107,7 @@ button:hover {
   border-radius: 5px;
   background-color: #f0f0f0;
 }
+
 
 .timer {
   font-size: 24px;
