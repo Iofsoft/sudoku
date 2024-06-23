@@ -1,23 +1,29 @@
 const Sequelize = require('sequelize');
-const sequelize = require('../db')
-const User = require('./user')
+const sequelize = require('../db');
+const User = require('./user');
 
 const Record = sequelize.define('record', {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
-    primaryKey: true
   },
-  remainingNumbers: {
+  numbersLeft: {
     type: Sequelize.STRING,
     allowNull: true,
-    unique: true,
+    primaryKey:true
   },
-})
+  idUser: { 
+    type: Sequelize.INTEGER,
+    references: {
+      model: User,
+      key: 'id'
+    },
+    primaryKey: true
+  }
+});
 
-Record.belongsTo(User,{
-    constraint: true,
-    foreignKey: 'idUser'
-} )
+Record.belongsTo(User, {
+  foreignKey: 'idUser'
+});
 
 module.exports = Record;

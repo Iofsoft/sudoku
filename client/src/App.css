@@ -1,115 +1,63 @@
-/* Global styles */
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f0f0f0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh; /* Para centralizar verticalmente */
-}
-
-h1 {
-  font-size: 50px;
-  margin-bottom: 10px;
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding-top: 0%;
+  padding: 0rem;
   text-align: center;
 }
-a{
-  padding: 30px;
-  cursor:pointer
-}
 
-button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  background-color: #4CAF50;
-  color: #fff;
-  cursor: pointer;
-  margin: 5px;
-}
-
-button:hover {
-  background-color: #45a049;
-}
-
-/* Login and Register styles */
-
-#unauthorized{
-  color: red
-}
-
-.login-box,
-.register-box {
-  width: 300px;
-  margin: 40px;
-  padding: 20px;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.login-box label,
-.register-box label {
-  display: block;
+h1{
+  margin-top: 0px;
   margin-bottom: 10px;
 }
-
-.login-box input,
-.register-box input {
-  width: 100%;
-  padding: 10px;
+p{
+  margin-top: 10px;
   margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-/* Sudoku styles */
-
-.sudoku-container {
   display: flex;
-  align-items: center; /* Para alinhar verticalmente o tabuleiro e o timer */
+  font-size: 24px;
 }
 
-.sudoku-table {
-  margin: 0 20px; /* Espaçamento entre o tabuleiro e o timer */
-  border-collapse: collapse;
+table input{
+  font-size: 20px;
+}
+table{
+  margin-bottom: 10px;
+}
+
+#score{
+  display: none;
+}
+
+#game{
+  display: inline-flex;
+}
+
+#buttons button{
+  margin-left: 10px;
+}
+
+.card {
+  padding: 2rem;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+.horizontal{
+  border-top: solid 3px #ffff;
 }
 
 .vertical{
-  border-left: 4px solid rgb(0, 0, 0)!important;
-}
-.horizontal{
-  border-top: 4px solid rgb(0, 0, 0)!important;
-}
-.sudoku-table td {
-  width: 40px;
-  height: 40px;
-  text-align: center;
-  padding: 5px;
-  border: 1px solid #ccc;
+  border-left: solid 3px #ffff;
 }
 
-.sudoku-table td input[type="text"] {
-  width: 100%;
-  height: 100%;
-  font-size: 24px;
-  text-align: center;
-  padding: 5px;
-  border: none;
-  border-radius: 5px;
-  background-color: #f0f0f0;
+.good{
+  color: rgb(51, 238, 51);
+  font-weight:bold;
 }
 
-
-.timer {
-  font-size: 24px;
-  margin-left: 20px; /* Espaçamento entre o timer e o tabuleiro */
+.bad{
+  color: rgb(247, 0, 0);
+  font-weight:bold;
 }
