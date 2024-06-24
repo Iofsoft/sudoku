@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../UserContext';
+import axios from 'axios';
 import '../App.css';
 
 const initialBoard = () => {
@@ -33,15 +34,15 @@ const solutionBoard = () => {
 
 const SudokuGame = () => {
   const [board, setBoard] = useState(initialBoard());
+  const [errMsg, setErrMsg] = useState('');
   const [rightNumbers, setRightNumbers] = useState(0);
   const [wrongNumbers, setWrongNumbers] = useState(0);
-  const [remainingNumbers, setRemainingNumbers] = useState(51);
+  const [numbersLeft, setNumbersLeft] = useState(51);
   const [time, setTime] = useState(20000);
   const [timeMsg, setTimeMsg] = useState('');
   const [isRunning, setIsRunningState] = useState(true);
-  const {username} = useContext(UserContext);
+  const {username, setUsername} = useContext(UserContext);  
   const navigate = useNavigate();
-
     useEffect(() => {
       if (isRunning) {
         const timer = setInterval(() => {
@@ -55,6 +56,8 @@ const SudokuGame = () => {
             setIsRunningState(false);
             setTimeMsg('Time\'s up!');
             checkPlay();
+            console.log(rightNumbers, wrongNumbers)
+
           }
         }, 10); // atualizar a cada 10ms para mostrar centésimos de segundos
         return () => clearInterval(timer);
@@ -67,10 +70,10 @@ const SudokuGame = () => {
     const newBoard = [...board];
     newBoard[row][col] = value;
     setBoard(newBoard);
-    countRemainingNumbers(newBoard);
+    countNumbersLeft(newBoard);
   };
 
-  const countRemainingNumbers = (board) => {
+  const countNumbersLeft = (board) => {
     let numbers = 0;
     for (let i = 0; i < 9; i++) {
       for (let j = 0; j < 9; j++) {
@@ -79,16 +82,21 @@ const SudokuGame = () => {
         }
       }
     }
-    setRemainingNumbers(numbers);
+    setNumbersLeft(numbers);
   };
 
-  const checkPlay = ()=>{
+  const setNumbers = (hits, miss) =>{
+    setRightNumbers(hits);
+    setWrongNumbers(miss);
+  };
+
+  const checkPlay = async ()=>{
     setIsRunningState(false);
     let currentBoard = [...board];
     let initial = initialBoard();
     let solution = solutionBoard();
     let finalBoard = solutionBoard();
-    let hit = 0;
+    let hits = 0;
     let miss = 0;
     for(let i = 0; i < 9; i ++){
       for(let j = 0; j < 9; j ++){
@@ -97,82 +105,82 @@ const SudokuGame = () => {
             document.querySelector(`#cell-${i}-${j}`).classList.add('bad');
             miss++;
             
+            
         }
         else if(currentBoard[i][j] == solution[i][j] && currentBoard[i][j] != initial[i][j]){
           document.querySelector(`#cell-${i}-${j}`).classList.add('good');
-          hit++;
-          
+          hits++;
         }
       }
     }
-    const record = remainingNumbers;
+    console.log('miss' + miss+ 'hits' + hits)
+    setNumbers(hits, miss);
     setBoard(finalBoard);
-    setWrongNumbers(miss);
-    setRightNumbers(hit);
     document.querySelector('#score').style.display='block';
+    saveRecord(username, hits, miss);
   };
 
-  const isValidMove = (board, row, col, num) => {
-    num = num.toString();
-    // Verifica linha
-    for (let i = 0; i < 9; i++) {
-        if (board[row][i].toString() === num) {
-            return false;
-        }
-    }
-    // Verifica coluna
-    for (let i = 0; i < 9; i++) {
-        if (board[i][col].toString() === num) {
-            return false;
-        }
-    }
-    // Verifica quadrante
-    const startRow = Math.floor(row / 3) * 3;
-    const startCol = Math.floor(col / 3) * 3;
-    for (let i = startRow; i < startRow + 3; i++) {
-        for (let j = startCol; j < startCol + 3; j++) {
-            if (board[i][j].toString() === num) {
-                return false;
-            }
-        }
-    }
-    return true;
-  };
+  // const isValidMove = (board, row, col, num) => {
+  //   num = num.toString();
+  //   // Verifica linha
+  //   for (let i = 0; i < 9; i++) {
+  //       if (board[row][i].toString() === num) {
+  //           return false;
+  //       }
+  //   }
+  //   // Verifica coluna
+  //   for (let i = 0; i < 9; i++) {
+  //       if (board[i][col].toString() === num) {
+  //           return false;
+  //       }
+  //   }
+  //   // Verifica quadrante
+  //   const startRow = Math.floor(row / 3) * 3;
+  //   const startCol = Math.floor(col / 3) * 3;
+  //   for (let i = startRow; i < startRow + 3; i++) {
+  //       for (let j = startCol; j < startCol + 3; j++) {
+  //           if (board[i][j].toString() === num) {
+  //               return false;
+  //           }
+  //       }
+  //   }
+  //   return true;
+  // };
 
-  const solveSudoku = () => {
-    const finalBoard = [...board];
-    if (solveHelper(finalBoard)) {
-        setBoard(finalBoard);
-        setIsRunningState(false);
-        document.querySelector('#msg').classList.add('good');
-        document.querySelector('#msg').classList.remove('bad')
-        setTimeMsg('Solved :D');
-    } else {
-        setIsRunningState(false);
-        document.querySelector('#msg').classList.add('bad');
-        setTimeMsg('Impossible Solution');
-    }
-  };
+  // const solveSudoku = () => {
+  //   const finalBoard = [...board];
+  //   if (solveHelper(finalBoard)) {
+  //       setBoard(finalBoard);
+  //       setIsRunningState(false);
+  //       document.querySelector('#msg').classList.add('good');
+  //       document.querySelector('#msg').classList.remove('bad')
+  //       setTimeMsg('Solved :D');
+  //   } else {
+  //       setIsRunningState(false);
+  //       document.querySelector('#msg').classList.add('bad');
+  //       setTimeMsg('Impossible Solution');
+  //   }
+  // };
 
-  const solveHelper = (board) => {
-    for (let row = 0; row < 9; row++) {
-      for (let col = 0; col < 9; col++) {
-        if (board[row][col] === '') {
-          for (let num = 1; num <= 9; num++) {
-            if (isValidMove(board, row, col, num)) {
-              board[row][col] = num.toString();
-              if (solveHelper(board)) {
-                  return true;
-              }
-              board[row][col] = '';
-            }
-          }
-          return false;
-        }
-      }
-    }
-    return true;
-  };
+  // const solveHelper = (board) => {
+  //   for (let row = 0; row < 9; row++) {
+  //     for (let col = 0; col < 9; col++) {
+  //       if (board[row][col] === '') {
+  //         for (let num = 1; num <= 9; num++) {
+  //           if (isValidMove(board, row, col, num)) {
+  //             board[row][col] = num.toString();
+  //             if (solveHelper(board)) {
+  //                 return true;
+  //             }
+  //             board[row][col] = '';
+  //           }
+  //         }
+  //         return false;
+  //       }
+  //     }
+  //   }
+  //   return true;
+  // };
 
   const resetSudoku = () =>{
     let cells = document.querySelectorAll('input[id^="cell"]');
@@ -185,13 +193,27 @@ const SudokuGame = () => {
     setTime(20000);
   };
 
-  const gotoRecords = () => navigate('/record')
-  const gotoLogout = () => navigate('/logout')
+ 
+
+  const saveRecord = (username, hits, miss) =>{
+    let score = hits - miss;
+    axios.post('http://localhost:3000/record', {username, numbersLeft, hits, miss, score})
+    .then(response =>{
+      if(response.status == 201) setErrMsg('New Record !')
+
+    })
+    .catch(error =>{
+      console.log(error)
+    });
+  };
+
+  const gotoRecords = () => navigate('/record');
+  const gotoLogout = () => navigate('/logout');
  
   return (
     <div id='sudoku'>
       <h1>{`Sudoku Time! `}</h1>
-      <p id='msg'>{`${timeMsg}`}</p>
+      <p id='timeMsg'>{`${timeMsg}`}</p>
       <div id='game'>
         <table className='sudoku-table'>
           <tbody>
@@ -220,7 +242,7 @@ const SudokuGame = () => {
             <tbody>
               <tr>
                 <td>Numbers Left:</td>
-                <td>{remainingNumbers}</td>
+                <td>{numbersLeft}</td>
               </tr>
               <tr>
                 <td>Right Numbers:</td>
@@ -233,6 +255,9 @@ const SudokuGame = () => {
               <tr>
                 <td>Total:</td>
                 <td>{rightNumbers - wrongNumbers}</td>
+              </tr>
+              <tr>
+                <td className={'good'}>{errMsg}</td>
               </tr>
             </tbody>
           </table>        

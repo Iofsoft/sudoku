@@ -5,7 +5,7 @@ const Record = require('./models/record');
 const PORT = 3000;
 
 (async () =>{
-    await sequelize.sync({force:true})
+    await sequelize.sync()
 })();
 
 app.listen(PORT, () =>{

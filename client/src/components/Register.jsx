@@ -31,8 +31,8 @@ function Register() {
     else if(email == '') setErrMsg('Invalid Email')
     else{
       axios.post('http://localhost:3000/register', {username, password, email})
-      .then(response =>{
-        console.log(reponse.data);
+      .then(response => {
+      navigate('/login')
       })
       .catch(error =>{
         console.error(error);

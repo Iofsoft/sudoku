@@ -8,9 +8,22 @@ const Record = sequelize.define('record', {
     autoIncrement: true,
   },
   numbersLeft: {
-    type: Sequelize.STRING,
-    allowNull: true,
+    type: Sequelize.INTEGER,
+    allowNull: false,
     primaryKey:true
+  },
+  rightNumbers: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    primaryKey:true
+  },
+  wrongNumbers: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    primaryKey:true
+  },
+  score:{
+    type: Sequelize.INTEGER,
   },
   idUser: { 
     type: Sequelize.INTEGER,

@@ -13,12 +13,11 @@ function Records() {
   return (
     <>
       <h1>Sudoku Time !</h1>
-      <div className="">
-        
-      </div>
+      <div className="buttonsStart">
         <button onClick={gotoGame}>Start Game</button>
         <button onClick={gotoRecords}>Records🔝</button>
         <button onClick={gotoLogout}>Logout❌</button>
+      </div>
         <p id='errMsg'>
           {errMsg}
         </p>

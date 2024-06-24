@@ -18,16 +18,16 @@ function Login() {
   const handlePassword = (e) =>{
     setPassword(e.target.value)
   }
-  const handleLogin = () => {
+  const handleLogin = (e) => {
+    e.preventDefault()
     axios.post('http://localhost:3000/login', {username, password})
     .then(response => {
-      console.log(response.data)
       if(response.status == 200){
         navigate('/start')
       }
     })
     .catch(error => {
-      console.error(error);
+      console.log(error)
       setErrMsg('Invalid username or password');
     });
   }
@@ -36,15 +36,17 @@ function Login() {
     <>
       <h1>Login</h1>
       <div className="card">
-        <form action="submit" className='card'>
+        <form className='card'>
           <label htmlFor="username">User: </label>
           <input type='text' id='username' onChange={handleUsername}></input>
           <label htmlFor="password" >Pass: </label>
           <input type='password' id='password' onChange={handlePassword}></input>
+          <div>
+            <button type='submit' onClick={handleLogin} onKeyDown={handleLogin}>Login</button>
+            <button onClick={gotoRegister}>Register</button>
+          </div>
         </form>
       </div>
-        <button type='button' onClick={handleLogin}>Login</button>
-        <button onClick={gotoRegister}>Register</button>
         <p id='errMsg'>
           {errMsg}
         </p>

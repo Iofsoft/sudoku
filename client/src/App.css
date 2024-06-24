@@ -1,64 +1,57 @@
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding-top: 0%;
   padding: 0rem;
   text-align: center;
 }
 
-h1{
+h1 {
   margin-top: 0px;
   margin-bottom: 10px;
 }
-p{
+
+p {
   margin-top: 10px;
   margin-bottom: 10px;
-  display: flex;
   font-size: 24px;
 }
 
-table input{
+table input {
   font-size: 20px;
 }
-table{
+
+table {
   margin-bottom: 10px;
 }
 
-#score{
+#score {
   display: none;
 }
 
-#errMsg{
+#errMsg {
   color: red;
   font-size: medium;
 }
 
-#game{
+#game {
   display: inline-flex;
 }
 
-#buttons button{
+#buttons button {
   margin-left: 10px;
 }
-.card button{
-  margin-top: 10px;
-  margin-right: 5px;
-}
-.card input{
-  margin-bottom: 5px;
+
+.buttonsStart button {
+  display: inline-flex;
+  margin-right: 10px;
 }
 
 .card {
   padding: 10px;
   margin: 0px;
-  display: flex-block;
+  display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
-}
-
-.card {
-  padding: 10px;
-  display: flex;
   flex-direction: column;
   align-items: center;
 }
@@ -71,7 +64,6 @@ table{
   margin-bottom: 1rem;
   padding: 0.5rem;
   width: 200px;
-  height: 10px;
 }
 
 .card button {
@@ -94,20 +86,75 @@ table{
   color: #888;
 }
 
-.horizontal{
+.horizontal {
   border-top: solid 3px #ffff;
 }
 
-.vertical{
+.vertical {
   border-left: solid 3px #ffff;
 }
 
-.good{
+.good {
   color: rgb(51, 238, 51);
-  font-weight:bold;
+  font-weight: bold;
 }
 
-.bad{
+.bad {
   color: rgb(247, 0, 0);
-  font-weight:bold;
+  font-weight: bold;
+}
+
+/* Dark theme for table records */
+#tableRecords {
+  background-color: #1e1e1e;
+  color: #c9d1d9;
+  font-family: Arial, sans-serif;
+}
+
+#tableRecords h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+#tableRecords table {
+  width: 80%;
+  margin: 0 auto;
+  border-collapse: collapse;
+  background-color: #2d2d2d;
+  color: #c9d1d9;
+  border: 1px solid #444;
+}
+
+#tableRecords th, 
+#tableRecords td {
+  padding: 10px;
+  border: 1px solid #444;
+  text-align: left;
+}
+
+#tableRecords th {
+  background-color: #3c3c3c;
+}
+
+#tableRecords tr:nth-child(even) {
+  background-color: #3a3a3a;
+}
+
+#tableRecords tr:hover {
+  background-color: #575757;
+}
+
+#tableRecords button {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  background-color: #444;
+  color: #c9d1d9;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+#tableRecords button:hover {
+  background-color: #575757;
 }

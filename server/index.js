@@ -34,13 +34,15 @@ app.post('/register', async (req, res) => {
   const { username, email, password } = req.body;
   try {
     await User.create({ username, email, password });
-    return res.status(201).send();
+    res.status(201).send();
   } catch (err) {
     if (err instanceof UniqueConstraintError) {
-      return res.status(409).send();
+      res.status(409).send();
     }
-    console.error('Error during register:', err);
-    return res.status(500).send('Error registering');
+    else{
+      console.error('Error during register:', err);
+      res.status(500).send('Error registering');
+    }
   }
 });
 
@@ -68,18 +70,19 @@ app.post('/login', async (req, res) => {
 });
 
 app.post('/record', async (req, res) => {
-  const { username, numbersLeft } = req.body;
-
+  const { username, numbersLeft, hits, miss, score } = req.body;
   try {
-    const user = await User.findOne({ where: { username : username } });
-    await Record.create({ numbersLeft, idUser: user.id });
-    return res.status(201).send();
+    const user = await User.findOne({ where: {username:username}});
+    await Record.create({ numbersLeft, rightNumbers:hits, wrongNumbers:miss, score,  idUser: user.id });
+    res.status(201).send();
   } catch (err) {
     if (err instanceof UniqueConstraintError) {
-      return res.status(409).send();
+      res.status(409).send();
     }
-    console.error('Error during record creation:', err);
-    return res.status(500).send('Error creating record');
+    else{
+      console.error('Error during record creation:', err);
+      res.status(500).send('Error creating record');
+    }
   }
 });
 
@@ -96,7 +99,8 @@ app.get('/record', async (req, res) => {
           attributes: ['username'],
         },
       ],
-      order: [['numbersLeft', 'ASC']],
+      order: [['score', 'DESC'],['rightNumbers', 'DESC']],
+      limit: 10
     });
     console.log(records)
     return res.status(200).json(records);
