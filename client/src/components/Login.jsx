@@ -7,7 +7,8 @@ import { UserContext } from '../UserContext';
 
 function Login() {
   const [errMsg, setErrMsg] = useState('');
-  const {username, setUsername, login} = useContext(UserContext);
+  const [username, setUsername] = useState('');
+  const {login} = useContext(UserContext);
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
