@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../UserContext';
 import '../App.css';
 
 const initialBoard = () => {
@@ -38,6 +39,7 @@ const SudokuGame = () => {
   const [time, setTime] = useState(20000);
   const [timeMsg, setTimeMsg] = useState('');
   const [isRunning, setIsRunningState] = useState(true);
+  const {username} = useContext(UserContext);
   const navigate = useNavigate();
 
     useEffect(() => {
