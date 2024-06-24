@@ -28,6 +28,11 @@ table{
   display: none;
 }
 
+#errMsg{
+  color: red;
+  font-size: medium;
+}
+
 #game{
   display: inline-flex;
 }
@@ -35,9 +40,54 @@ table{
 #buttons button{
   margin-left: 10px;
 }
+.card button{
+  margin-top: 10px;
+  margin-right: 5px;
+}
+.card input{
+  margin-bottom: 5px;
+}
 
 .card {
-  padding: 2rem;
+  padding: 10px;
+  margin: 0px;
+  display: flex-block;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.card {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card label {
+  margin-bottom: 0.5rem;
+}
+
+.card input {
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  width: 200px;
+  height: 10px;
+}
+
+.card button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+}
+
+.card a {
+  margin-top: 0.5rem;
+  text-decoration: none;
+  color: #337ab7;
+}
+
+.card p {
+  color: red;
+  margin-top: 1rem;
 }
 
 .read-the-docs {

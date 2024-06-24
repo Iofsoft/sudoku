@@ -1,8 +1,12 @@
 import { useState } from 'react'
+import {useNavigate} from 'react-router-dom'
 import '../App.css'
 
 function Login() {
   const [errMsg, setErrMsg] = useState('');
+  const navigate = useNavigate();
+
+  const gotoRegister = () => navigate('/register');
 
   return (
     <>
@@ -10,16 +14,14 @@ function Login() {
       <div className="card">
         <label htmlFor="username">User: </label>
         <input type='text' id='username'></input>
-        <br />
         <label htmlFor="password">Pass: </label>
-        <input type='text' id='password'></input>
-        <br />
+        <input type='password' id='password'></input>
+      </div>
         <button>Login</button>
-        <button>Register</button>
+        <button onClick={gotoRegister}>Register</button>
         <p id='errMsg'>
           {errMsg}
         </p>
-      </div>
     </>
   )
 }
