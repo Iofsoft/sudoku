@@ -4,13 +4,15 @@ import axios from 'axios';
 import '../App.css'
 import { UserContext } from '../UserContext';
 
+
 function Login() {
   const [errMsg, setErrMsg] = useState('');
-  const {username, setUsername} = useContext(UserContext);
+  const {username, setUsername, login} = useContext(UserContext);
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
   const gotoRegister = () => navigate('/register');
+
 
   const handleUsername = (e) =>{
     setUsername(e.target.value)
@@ -22,7 +24,9 @@ function Login() {
     e.preventDefault()
     axios.post('http://localhost:3000/login', {username, password})
     .then(response => {
+
       if(response.status == 200){
+        login(response.data)
         navigate('/start')
       }
     })
@@ -42,7 +46,7 @@ function Login() {
           <label htmlFor="password" >Pass: </label>
           <input type='password' id='password' onChange={handlePassword}></input>
           <div>
-            <button type='submit' onClick={handleLogin} onKeyDown={handleLogin}>Login</button>
+            <button type='button' onClick={handleLogin} onKeyDown={handleLogin}>Login</button>
             <button onClick={gotoRegister}>Register</button>
           </div>
         </form>

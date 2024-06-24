@@ -43,6 +43,7 @@ const SudokuGame = () => {
   const [isRunning, setIsRunningState] = useState(true);
   const {username, setUsername} = useContext(UserContext);  
   const navigate = useNavigate();
+
     useEffect(() => {
       if (isRunning) {
         const timer = setInterval(() => {
@@ -113,11 +114,10 @@ const SudokuGame = () => {
         }
       }
     }
-    console.log('miss' + miss+ 'hits' + hits)
     setNumbers(hits, miss);
     setBoard(finalBoard);
     document.querySelector('#score').style.display='block';
-    saveRecord(username, hits, miss);
+    saveRecord(hits, miss);
   };
 
   // const isValidMove = (board, row, col, num) => {
@@ -195,7 +195,7 @@ const SudokuGame = () => {
 
  
 
-  const saveRecord = (username, hits, miss) =>{
+  const saveRecord = (hits, miss) =>{
     let score = hits - miss;
     axios.post('http://localhost:3000/record', {username, numbersLeft, hits, miss, score})
     .then(response =>{
@@ -209,6 +209,7 @@ const SudokuGame = () => {
 
   const gotoRecords = () => navigate('/record');
   const gotoLogout = () => navigate('/logout');
+  
  
   return (
     <div id='sudoku'>

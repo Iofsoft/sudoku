@@ -1,11 +1,10 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import {useNavigate} from 'react-router-dom'
 import '../App.css'
 
-function Records() {
-  const [errMsg, setErrMsg] = useState('');
+function Start() {
+  const [errMsg] = useState('');
   const navigate = useNavigate();
-
   const gotoGame = () => navigate('/game');
   const gotoRecords = () => navigate('/record')
   const gotoLogout = () => navigate('/logout')
@@ -25,4 +24,4 @@ function Records() {
   )
 }
 
-export default Records
+export default Start

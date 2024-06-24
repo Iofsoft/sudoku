@@ -26,7 +26,8 @@ function Register() {
     setRptPassword(e.target.value)
   }
 
-  const handleRegister = () => {
+  const handleRegister = (e) => {
+    e.preventDefault()
     if(password !== rptPassword) setErrMsg('Passwords don\'t Match !')
     else if(email == '') setErrMsg('Invalid Email')
     else{

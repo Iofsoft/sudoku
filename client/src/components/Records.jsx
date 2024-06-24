@@ -17,7 +17,6 @@ function Records() {
       try {
         const response = await axios.get('http://localhost:3000/record');
         setRecords(response.data);
-        console.log(response)
       } catch (error) {
         setErrMsg('Error fetching records');
       }

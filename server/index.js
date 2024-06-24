@@ -3,7 +3,8 @@ const User = require('./models/user');
 const Record = require('./models/record');
 const express = require('express');
 const cors = require('cors');
-// const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 const SECRET = 'sudoku';
 const { UniqueConstraintError } = require('sequelize');
 
@@ -32,8 +33,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
   
 app.post('/register', async (req, res) => {
   const { username, email, password } = req.body;
+  const hashedPassword = await bcrypt.hash(password, 10);
   try {
-    await User.create({ username, email, password });
+    await User.create({ username, email, password:hashedPassword });
     res.status(201).send();
   } catch (err) {
     if (err instanceof UniqueConstraintError) {
@@ -51,18 +53,16 @@ app.post('/login', async (req, res) => {
   try {
     const user = await User.findOne({
       where: {
-        username:username,
-        password:password,
+        username:username
       },
     })
-
-    if (!user) {
-      return res.status(401).json({
-      });
+    if(user && await bcrypt.compare(password, user.password)){
+      const accessToken = jwt.sign({username:user.username}, SECRET);
+      console.log(accessToken)
+      res.status(200).json({username, accessToken});
     }else{
-      return res.status(200).send();
+      return res.status(401).send();
     }
-    // const token = jwt.sign({ id: user.id }, SECRET, { expiresIn: 300 });
   } catch (err) {
     console.error('Error during login:', err);
     return res.status(500).send();
@@ -110,13 +110,10 @@ app.get('/record', async (req, res) => {
   }
 });
 
-// app.post('/logout', (req, res) => {
-//   const token = req.headers['x-access-token'];
-//   if (token) {
-//     blacklist.push(token);
-//   }
-//   res.end();
-// });
+app.post('/logout', (req, res) => {
+  
+  res.status(200).send();
+});
 
 
 module.exports = app;
