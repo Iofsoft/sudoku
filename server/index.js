@@ -12,24 +12,6 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-// const blacklist = [];
-
-// const verifyJWT = (req, res, next) => {
-//     const token = req.headers['x-access-token'];
-//     if (!token || blacklist.includes(token)) {
-//       return res.status(401).json({ auth: false, message: 'Unauthorized' });
-//     }
-  
-//     jwt.verify(token, SECRET, (err, decoded) => {
-//       if (err) {
-//         console.error('JWT verification error:', err);
-//         return res.status(401).json({ auth: false, message: 'Failed to authenticate token' });
-//       }
-//       req.userId = decoded.id;
-//       next();
-//     });
-//   };
   
 app.post('/register', async (req, res) => {
   const { username, email, password } = req.body;
@@ -37,12 +19,12 @@ app.post('/register', async (req, res) => {
   try {
     await User.create({ username, email, password:hashedPassword });
     res.status(201).send();
-  } catch (err) {
-    if (err instanceof UniqueConstraintError) {
+  } catch (error) {
+    if (error instanceof UniqueConstraintError) {
       res.status(409).send();
     }
     else{
-      console.error('Error during register:', err);
+      console.error('Error during register:', error);
       res.status(500).send('Error registering');
     }
   }
@@ -102,7 +84,6 @@ app.get('/record', async (req, res) => {
       order: [['score', 'DESC'],['rightNumbers', 'DESC']],
       limit: 10
     });
-    console.log(records)
     return res.status(200).json(records);
   } catch (error) {
     console.error('Error fetching records:', error);
@@ -111,9 +92,7 @@ app.get('/record', async (req, res) => {
 });
 
 app.post('/logout', (req, res) => {
-  
   res.status(200).send();
 });
-
 
 module.exports = app;

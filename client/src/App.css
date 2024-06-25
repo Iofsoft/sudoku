@@ -32,6 +32,16 @@ table {
   color: red;
   font-size: medium;
 }
+#timeStart{
+  display: flex;
+  align-items: center;
+}
+#timeStart input{
+  max-width: 80px;
+  margin-left: 10px;
+  height: 30px;
+  font-size: larger;
+}
 
 #game {
   display: inline-flex;

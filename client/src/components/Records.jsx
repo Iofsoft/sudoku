@@ -1,13 +1,11 @@
-import React, {useState, useContext, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import '../App.css';
-import {UserContext} from '../UserContext';
 
 function Records() {
   const [records, setRecords] = useState([]);
   const [errMsg, setErrMsg] = useState('');
-  const {username, setUsername} = useContext(UserContext);
   const navigate = useNavigate();
 
   const gotoGame = () => navigate('/start');

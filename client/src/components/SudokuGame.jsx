@@ -35,13 +35,16 @@ const solutionBoard = () => {
 const SudokuGame = () => {
   const [board, setBoard] = useState(initialBoard());
   const [errMsg, setErrMsg] = useState('');
+
   const [rightNumbers, setRightNumbers] = useState(0);
   const [wrongNumbers, setWrongNumbers] = useState(0);
   const [numbersLeft, setNumbersLeft] = useState(51);
-  const [time, setTime] = useState(20000);
+
+  const {time, setTime} = useContext(UserContext);
   const [timeMsg, setTimeMsg] = useState('');
   const [isRunning, setIsRunningState] = useState(true);
-  const {username, setUsername} = useContext(UserContext);  
+
+  const {username} = useContext(UserContext);  
   const navigate = useNavigate();
 
     useEffect(() => {
@@ -57,8 +60,6 @@ const SudokuGame = () => {
             setIsRunningState(false);
             setTimeMsg('Time\'s up!');
             checkPlay();
-            console.log(rightNumbers, wrongNumbers)
-
           }
         }, 10); // atualizar a cada 10ms para mostrar centésimos de segundos
         return () => clearInterval(timer);
@@ -104,9 +105,7 @@ const SudokuGame = () => {
         if(currentBoard[i][j] != solution[i][j] && currentBoard[i][j] != ''){
             finalBoard[i][j] = currentBoard[i][j];
             document.querySelector(`#cell-${i}-${j}`).classList.add('bad');
-            miss++;
-            
-            
+            miss++;            
         }
         else if(currentBoard[i][j] == solution[i][j] && currentBoard[i][j] != initial[i][j]){
           document.querySelector(`#cell-${i}-${j}`).classList.add('good');
@@ -120,68 +119,6 @@ const SudokuGame = () => {
     saveRecord(hits, miss);
   };
 
-  // const isValidMove = (board, row, col, num) => {
-  //   num = num.toString();
-  //   // Verifica linha
-  //   for (let i = 0; i < 9; i++) {
-  //       if (board[row][i].toString() === num) {
-  //           return false;
-  //       }
-  //   }
-  //   // Verifica coluna
-  //   for (let i = 0; i < 9; i++) {
-  //       if (board[i][col].toString() === num) {
-  //           return false;
-  //       }
-  //   }
-  //   // Verifica quadrante
-  //   const startRow = Math.floor(row / 3) * 3;
-  //   const startCol = Math.floor(col / 3) * 3;
-  //   for (let i = startRow; i < startRow + 3; i++) {
-  //       for (let j = startCol; j < startCol + 3; j++) {
-  //           if (board[i][j].toString() === num) {
-  //               return false;
-  //           }
-  //       }
-  //   }
-  //   return true;
-  // };
-
-  // const solveSudoku = () => {
-  //   const finalBoard = [...board];
-  //   if (solveHelper(finalBoard)) {
-  //       setBoard(finalBoard);
-  //       setIsRunningState(false);
-  //       document.querySelector('#msg').classList.add('good');
-  //       document.querySelector('#msg').classList.remove('bad')
-  //       setTimeMsg('Solved :D');
-  //   } else {
-  //       setIsRunningState(false);
-  //       document.querySelector('#msg').classList.add('bad');
-  //       setTimeMsg('Impossible Solution');
-  //   }
-  // };
-
-  // const solveHelper = (board) => {
-  //   for (let row = 0; row < 9; row++) {
-  //     for (let col = 0; col < 9; col++) {
-  //       if (board[row][col] === '') {
-  //         for (let num = 1; num <= 9; num++) {
-  //           if (isValidMove(board, row, col, num)) {
-  //             board[row][col] = num.toString();
-  //             if (solveHelper(board)) {
-  //                 return true;
-  //             }
-  //             board[row][col] = '';
-  //           }
-  //         }
-  //         return false;
-  //       }
-  //     }
-  //   }
-  //   return true;
-  // };
-
   const resetSudoku = () =>{
     let cells = document.querySelectorAll('input[id^="cell"]');
     cells.forEach(cell => {
@@ -191,16 +128,13 @@ const SudokuGame = () => {
     setBoard(initialBoard());
     setIsRunningState(true);
     setTime(20000);
-  };
-
- 
+  }; 
 
   const saveRecord = (hits, miss) =>{
     let score = hits - miss;
     axios.post('http://localhost:3000/record', {username, numbersLeft, hits, miss, score})
     .then(response =>{
       if(response.status == 201) setErrMsg('New Record !')
-
     })
     .catch(error =>{
       console.log(error)
@@ -209,7 +143,6 @@ const SudokuGame = () => {
 
   const gotoRecords = () => navigate('/record');
   const gotoLogout = () => navigate('/logout');
-  
  
   return (
     <div id='sudoku'>
@@ -275,3 +208,67 @@ const SudokuGame = () => {
 };
 
 export default SudokuGame;
+
+//ALGORITMO DE RESOLUCAO SUDOKU BACKTRACKING
+
+  // const isValidMove = (board, row, col, num) => {
+  //   num = num.toString();
+  //   // Verifica linha
+  //   for (let i = 0; i < 9; i++) {
+  //       if (board[row][i].toString() === num) {
+  //           return false;
+  //       }
+  //   }
+  //   // Verifica coluna
+  //   for (let i = 0; i < 9; i++) {
+  //       if (board[i][col].toString() === num) {
+  //           return false;
+  //       }
+  //   }
+  //   // Verifica quadrante
+  //   const startRow = Math.floor(row / 3) * 3;
+  //   const startCol = Math.floor(col / 3) * 3;
+  //   for (let i = startRow; i < startRow + 3; i++) {
+  //       for (let j = startCol; j < startCol + 3; j++) {
+  //           if (board[i][j].toString() === num) {
+  //               return false;
+  //           }
+  //       }
+  //   }
+  //   return true;
+  // };
+
+  // const solveSudoku = () => {
+  //   const finalBoard = [...board];
+  //   if (solveHelper(finalBoard)) {
+  //       setBoard(finalBoard);
+  //       setIsRunningState(false);
+  //       document.querySelector('#msg').classList.add('good');
+  //       document.querySelector('#msg').classList.remove('bad')
+  //       setTimeMsg('Solved :D');
+  //   } else {
+  //       setIsRunningState(false);
+  //       document.querySelector('#msg').classList.add('bad');
+  //       setTimeMsg('Impossible Solution');
+  //   }
+  // };
+
+  // const solveHelper = (board) => {
+  //   for (let row = 0; row < 9; row++) {
+  //     for (let col = 0; col < 9; col++) {
+  //       if (board[row][col] === '') {
+  //         for (let num = 1; num <= 9; num++) {
+  //           if (isValidMove(board, row, col, num)) {
+  //             board[row][col] = num.toString();
+  //             if (solveHelper(board)) {
+  //                 return true;
+  //             }
+  //             board[row][col] = '';
+  //           }
+  //         }
+  //         return false;
+  //       }
+  //     }
+  //   }
+  //   return true;
+  // };

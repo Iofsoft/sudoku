@@ -1,8 +1,8 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { useContext, useEffect } from 'react'
+import { useContext} from 'react'
 import { UserProvider, UserContext } from './UserContext.jsx';
 import Login from './components/Login.jsx';
-import Register from './components/Register.jsx'; // assuming you have a Register component
+import Register from './components/Register.jsx';
 import SudokuGame from './components/SudokuGame.jsx';
 import Start from './components/Start.jsx'
 import Records from './components/Records.jsx';
@@ -10,13 +10,10 @@ import Logout from './components/Logout.jsx';
 import Protected from './components/Protected.jsx'
 import './App.css'
 
-
-
 const AppRoutes = () => {
   const {isSignedIn} = useContext(UserContext);
 
   return (
-
       <UserProvider>
         <BrowserRouter>
           <Routes>
@@ -36,6 +33,5 @@ const AppRoutes = () => {
       </UserProvider>
   );
 };
-
 
 export default AppRoutes;

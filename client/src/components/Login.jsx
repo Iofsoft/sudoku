@@ -25,7 +25,6 @@ function Login() {
     e.preventDefault()
     axios.post('http://localhost:3000/login', {username, password})
     .then(response => {
-
       if(response.status == 200){
         login(response.data)
         navigate('/start')

@@ -6,6 +6,8 @@ const UserProvider = ({children}) =>{
     const [username, setUsername] = useState('');
     const [token, setToken] = useState(localStorage.getItem('token' || null));
     const [isSignedIn, setIsSignedIn] = useState(null);
+    const [time, setTime] = useState('');
+    
     useEffect(() => {
         if (token) {
           localStorage.setItem('token', token);
@@ -18,7 +20,6 @@ const UserProvider = ({children}) =>{
         setUsername(userData.username);
         setToken(userData.accessToken);
         setIsSignedIn(true);
-        console.log(isSignedIn)
       };
     
       const logout = () => {
@@ -28,7 +29,7 @@ const UserProvider = ({children}) =>{
       };
     
       return (
-        <UserContext.Provider value={{ username, token, isSignedIn, login, logout, setUsername }}>
+        <UserContext.Provider value={{ username, token, isSignedIn, time, login, logout, setUsername, setTime }}>
           {children}
         </UserContext.Provider>
       );
