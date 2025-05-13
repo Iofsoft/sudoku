@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { UserContext } from '../UserContext';
 import axios from 'axios';
 import '../App.css';
+import { UserContext } from '../UserContext';
+import apiConfig from '../config/api';
 
 const initialBoard = () => {
   return ([
@@ -132,7 +133,7 @@ const SudokuGame = () => {
 
   const saveRecord = (hits, miss) =>{
     let score = hits - miss;
-    axios.post('http://localhost:3000/record', {username, numbersLeft, hits, miss, score})
+      axios.post(`${apiConfig.baseURL}${apiConfig.endpoints.record}`, {username, numbersLeft, hits, miss, score})
     .then(response =>{
       if(response.status == 201) setErrMsg('New Record !')
     })
