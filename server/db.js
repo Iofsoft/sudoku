@@ -73,4 +73,4 @@ connectWithRetry()
 
     });
 
-module.exports = sequelize;
+module.exports = {sequelize, connectWithRetry};
