@@ -3,6 +3,7 @@ import {useNavigate} from 'react-router-dom'
 import axios from 'axios';
 import '../App.css'
 import { UserContext } from '../UserContext';
+import apiConfig from '../config/api';
 
 
 function Login() {
@@ -23,7 +24,7 @@ function Login() {
   }
   const handleLogin = (e) => {
     e.preventDefault()
-    axios.post('http://localhost:3000/login', {username, password})
+    axios.post(`${apiConfig.baseURL}${apiConfig.endpoints.login}`, {username, password})
     .then(response => {
       if(response.status == 200){
         login(response.data)

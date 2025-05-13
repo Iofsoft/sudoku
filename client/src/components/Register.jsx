@@ -2,6 +2,7 @@ import { useState } from 'react'
 import {useNavigate} from 'react-router-dom'
 import axios from 'axios';
 import '../App.css'
+import apiConfig from '../config/api';
 
 function Register() {
   const [errMsg, setErrMsg] = useState('');
@@ -31,7 +32,7 @@ function Register() {
     if(password !== rptPassword) setErrMsg('Passwords don\'t Match !')
     else if(email == '') setErrMsg('Invalid Email')
     else{
-      axios.post('http://localhost:3000/register', {username, password, email})
+      axios.post(`${apiConfig.baseURL}${apiConfig.endpoints.register}`, {username, password, email})
       .then(response => {
       navigate('/login')
       })

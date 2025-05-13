@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import '../App.css';
+import apiConfig from '../config/api';
 
 function Records() {
   const [records, setRecords] = useState([]);
@@ -13,7 +14,7 @@ function Records() {
   useEffect(() => {
     const fetchRecords = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/record');
+        const response = await axios.get(`${apiConfig.baseURL}${apiConfig.endpoints.record}`);
         setRecords(response.data);
       } catch (error) {
         setErrMsg('Error fetching records');
